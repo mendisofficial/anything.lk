@@ -25,8 +25,6 @@ public class SignUp extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//        System.out.println("OK");
         Gson gson = new Gson();
         
         JsonObject user = gson.fromJson(request.getReader(), JsonObject.class);
@@ -36,41 +34,24 @@ public class SignUp extends HttpServlet {
         final String email = user.get("email").getAsString();
         String password = user.get("password").getAsString();
 
-//        System.out.println(firstname);
-//        System.out.println(lastname);
-//        System.out.println(email);
-//        System.out.println(password);
+        // Prepare response object
         JsonObject responseObject = new JsonObject();
         responseObject.addProperty("status", false);
 
         // Validation
         if (firstname.isEmpty()) {
-            
-            responseObject.addProperty("message", "First Name can be empty!");
-            
+            responseObject.addProperty("message", "First name can't be empty!");
         } else if (lastname.isEmpty()) {
-            
-            responseObject.addProperty("message", "Last Name can be empty!");
-            
+            responseObject.addProperty("message", "Last Name can't be empty!");
         } else if (email.isEmpty()) {
-            
-            responseObject.addProperty("message", "Email can be empty!");
-            
+            responseObject.addProperty("message", "Email can't be empty!");
         } else if (!Util.isEmailValid(email)) {
-            
-            responseObject.addProperty("message", "Please enter a Valide email!");
-            
+            responseObject.addProperty("message", "Please enter a valid email!");
         } else if (password.isEmpty()) {
-            
-            responseObject.addProperty("message", "Password can be empty!");
-            
+            responseObject.addProperty("message", "Password can't be empty!"); 
         } else if (!Util.isPasswordValid(password)) {
-            
-            responseObject.addProperty("message", "The Password must contains at least uppercase,lowercase "
-                    + "number, special character and to be eight characters long!");
-            
+            responseObject.addProperty("message", "The Password must contains at least one uppercase, one lowercase, one number, one special character and to be eight characters long!");
         } else {
-
             //Save
             Session session = HibernateUtil.getSessionFactory().openSession();
             
@@ -78,9 +59,7 @@ public class SignUp extends HttpServlet {
             criteria.add(Restrictions.eq("email", email));
             
             if (!criteria.list().isEmpty()) {
-                
-                responseObject.addProperty("message", "User with this Email already exists!!");
-                
+                responseObject.addProperty("message", "This email already exists!");
             } else {
                 
                 User u = new User();
@@ -89,7 +68,7 @@ public class SignUp extends HttpServlet {
                 u.setEmail(email);
                 u.setPassword(password);
 
-                // genarate verification code
+                // generate verification code
                 final String verificationCode = Util.genrateCode();
                 u.setVerification(verificationCode);
                 
@@ -98,25 +77,21 @@ public class SignUp extends HttpServlet {
                 session.save(u);
                 session.beginTransaction().commit();
 
-                // send Email
+                // send email
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        
-                        Mail.sendMail(email, "SmartTrade - Verification", "<h1>" + verificationCode + "</h1>");
-                        
+                        Mail.sendMail(email, "Anything.LK - Verification", "<h1>" + verificationCode + "</h1>");
                     }
                 }).start();
 
-                //session management
+                // session management
                 HttpSession ses = request.getSession();
                 ses.setAttribute("email", email);
-                //session management
                 
+                // response
                 responseObject.addProperty("status", true);
-                
-                responseObject.addProperty("message", "Registration success!!. Please check You email for the verification code.");
-                
+                responseObject.addProperty("message", "Registration success! Please check your email for the verification code.");
             }
             
             session.close();
