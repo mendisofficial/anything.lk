@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import hibernate.HibernateUtil;
 import hibernate.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,31 +21,25 @@ import org.hibernate.criterion.Restrictions;
 public class VerifyAccount extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Gson gson = new Gson();
 
         JsonObject responseObject = new JsonObject();
         responseObject.addProperty("status", false);
 
-        // first step is chechk email save in saession
+        // first step is to check the email save in session
         HttpSession ses = request.getSession();
 
         if (ses.getAttribute("email") == null) {
-
-//            responseObject.addProperty("message", "Email not found!!");
-            responseObject.addProperty("message", "1");
+            responseObject.addProperty("message", "Your email is not in the request session!");
 
         } else {
 
             String email = ses.getAttribute("email").toString();
-
             JsonObject verification = gson.fromJson(request.getReader(), JsonObject.class);
-
             String verificationCode = verification.get("verificationCode").getAsString();
 
-//            System.out.println(verificationCode);
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session s = sf.openSession();
 
@@ -59,13 +52,10 @@ public class VerifyAccount extends HttpServlet {
             c1.add(crt2);
 
             if (c1.list().isEmpty()) {
-
-                responseObject.addProperty("message", "Invalid Verification code!!");
-
+                responseObject.addProperty("message", "Invalid Verification code!");
             } else {
-
                 User user = (User) c1.list().get(0);
-                user.setVerification("Verifide");
+                user.setVerification("Verified");
 
                 s.update(user);
                 s.beginTransaction().commit();
@@ -73,11 +63,9 @@ public class VerifyAccount extends HttpServlet {
 
                 // store user in the session
                 ses.setAttribute("user", user);
-                // store user in the session
 
                 responseObject.addProperty("status", true);
-                responseObject.addProperty("message", "Verifide successful!");
-
+                responseObject.addProperty("message", "Email verification successful! Please login to continue.");
             }
 
         }
