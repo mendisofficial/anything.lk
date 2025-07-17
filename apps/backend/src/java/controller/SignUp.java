@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import hibernate.HibernateUtil;
 import hibernate.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +16,6 @@ import model.Mail;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 @WebServlet(name = "SignUp", urlPatterns = {"/SignUp"})
