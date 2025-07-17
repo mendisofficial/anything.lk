@@ -1,6 +1,95 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { signinUser, verifyAccount } from "../hooks/useAuth";
+import { SigninData } from "../types";
 
 export default function SigninPage() {
+  const [formData, setFormData] = useState<SigninData>({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showVerificationForm, setShowVerificationForm] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const response = await signinUser(formData);
+      if (response.status) {
+        if (response.message === "Please verify your email") {
+          setSuccessMessage(
+            "Please verify your email. Check your email for the verification code."
+          );
+          setShowVerificationForm(true);
+        } else {
+          setSuccessMessage(response.message);
+          setTimeout(() => {
+            router.push("/");
+          }, 2000);
+        }
+      } else {
+        setError(response.message || "An unknown error occurred.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "An error occurred during sign in."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerificationSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const response = await verifyAccount(verificationCode);
+      if (response.status) {
+        setSuccessMessage(response.message);
+        setTimeout(() => {
+          setShowVerificationForm(false);
+          setError(null);
+          router.push("/auth/signin");
+        }, 2000);
+      } else {
+        setError(response.message || "An unknown error occurred.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "An error occurred during verification."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-1">
@@ -14,129 +103,146 @@ export default function SigninPage() {
                 width={500}
                 height={500}
               />
-              <h2 className="mt-8 text-2xl/9 font-bold tracking-tight text-gray-900">
-                Sign in to your account
-              </h2>
-              <p className="mt-2 text-sm/6 text-gray-500">
-                Not a member?{" "}
-                <a
-                  href="/auth/signup"
-                  className="font-semibold text-vivid-magenta hover:text-vivid-magenta-hover"
-                >
-                  Create an account here
-                </a>
-              </p>
+              {showVerificationForm ? (
+                <>
+                  <h2 className="mt-8 text-2xl/9 font-bold tracking-tight text-gray-900">
+                    Verify your account
+                  </h2>
+                  <p className="mt-2 text-sm/6 text-gray-500">
+                    Enter the verification code sent to your email.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="mt-8 text-2xl/9 font-bold tracking-tight text-gray-900">
+                    Sign in to your account
+                  </h2>
+                  <p className="mt-2 text-sm/6 text-gray-500">
+                    Not a member?{" "}
+                    <a
+                      href="/auth/signup"
+                      className="font-semibold text-vivid-magenta hover:text-vivid-magenta-hover"
+                    >
+                      Create an account here
+                    </a>
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm/6 font-medium text-gray-900"
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm/6 font-medium text-gray-900"
-                    >
-                      Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        autoComplete="current-password"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex gap-3">
-                      <div className="flex h-6 shrink-0 items-center">
-                        <div className="group grid size-4 grid-cols-1">
-                          <input
-                            id="remember-me"
-                            name="remember-me"
-                            type="checkbox"
-                            className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:bg-vivid-magenta indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                          />
-                          <svg
-                            fill="none"
-                            viewBox="0 0 14 14"
-                            className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                          >
-                            <path
-                              d="M3 8L6 11L11 3.5"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="opacity-0 group-has-checked:opacity-100"
-                            />
-                            <path
-                              d="M3 7H11"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="opacity-0 group-has-indeterminate:opacity-100"
-                            />
-                          </svg>
-                        </div>
-                      </div>
+                {showVerificationForm ? (
+                  <form
+                    onSubmit={handleVerificationSubmit}
+                    className="space-y-6"
+                  >
+                    <div>
                       <label
-                        htmlFor="remember-me"
-                        className="block text-sm/6 text-gray-900"
+                        htmlFor="verification-code"
+                        className="block text-sm/6 font-medium text-gray-900"
                       >
-                        Remember me
+                        Verification Code
                       </label>
+                      <div className="mt-2">
+                        <input
+                          id="verification-code"
+                          name="verificationCode"
+                          type="text"
+                          required
+                          value={verificationCode}
+                          onChange={(e) => setVerificationCode(e.target.value)}
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+                      </div>
                     </div>
 
-                    <div className="text-sm/6">
-                      <a
-                        href="#"
-                        className="font-semibold text-vivid-magenta hover:text-vivid-magenta-hover"
+                    {error && <p className="text-sm text-red-500">{error}</p>}
+                    {successMessage && (
+                      <p className="text-sm text-green-500">{successMessage}</p>
+                    )}
+
+                    <div>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="flex w-full justify-center rounded-md bg-vivid-magenta px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-vivid-magenta-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
-                        Forgot password?
-                      </a>
+                        {loading ? "Verifying..." : "Verify"}
+                      </button>
                     </div>
-                  </div>
+                  </form>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm/6 font-medium text-gray-900"
+                      >
+                        Email address
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          autoComplete="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+                      </div>
+                    </div>
 
-                  <div>
-                    <button
-                      type="submit"
-                      className="flex w-full justify-center rounded-md bg-vivid-magenta px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-vivid-magenta-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Sign in
-                    </button>
-                  </div>
-                </form>
+                    <div>
+                      <label
+                        htmlFor="password"
+                        className="block text-sm/6 font-medium text-gray-900"
+                      >
+                        Password
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          required
+                          autoComplete="current-password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        />
+                      </div>
+                    </div>
+
+                    {error && <p className="text-sm text-red-500">{error}</p>}
+                    {successMessage && (
+                      <p className="text-sm text-green-500">{successMessage}</p>
+                    )}
+
+                    <div>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="flex w-full justify-center rounded-md bg-vivid-magenta px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-vivid-magenta-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        {loading ? "Signing in..." : "Sign in"}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
           </div>
         </div>
         <div className="relative hidden w-0 flex-1 lg:block">
-          <img
+          <Image
             alt=""
             src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
             className="absolute inset-0 size-full object-cover"
+            width={1908}
+            height={1433}
           />
         </div>
       </div>
