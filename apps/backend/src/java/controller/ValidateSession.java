@@ -19,6 +19,7 @@ public class ValidateSession extends HttpServlet {
         
         Gson gson = new Gson();
         JsonObject responseObject = new JsonObject();
+        responseObject.addProperty("status", false);
         responseObject.addProperty("isValid", false);
         responseObject.addProperty("isAuthenticated", false);
         
@@ -37,6 +38,7 @@ public class ValidateSession extends HttpServlet {
                 if (userObj != null && userObj instanceof User) {
                     // User is fully authenticated and verified
                     User user = (User) userObj;
+                    responseObject.addProperty("status", true);
                     responseObject.addProperty("isValid", true);
                     responseObject.addProperty("isAuthenticated", true);
                     responseObject.addProperty("message", "Session is valid and user is authenticated");
@@ -52,6 +54,7 @@ public class ValidateSession extends HttpServlet {
                     
                 } else if (emailObj != null) {
                     // User has registered but not verified yet
+                    responseObject.addProperty("status", true);
                     responseObject.addProperty("isValid", true);
                     responseObject.addProperty("isAuthenticated", false);
                     responseObject.addProperty("message", "Session is valid but user is not verified");
