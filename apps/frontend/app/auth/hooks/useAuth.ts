@@ -41,3 +41,29 @@ export const verifyAccount = async (verificationCode: string) => {
         };
     }
 };
+
+export const sessionValidation = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/ValidateSession`, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error("Error validating session:", error);
+        return {
+            status: false,
+            message: "An error occurred during session validation.",
+        };
+    }
+};
+
+export const logoutUser = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/SignOut`, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error("Error during logout:", error);
+        return {
+            status: false,
+            message: "An error occurred during logout.",
+        };
+    }
+};
