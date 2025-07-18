@@ -67,6 +67,16 @@ public class SignIn extends HttpServlet {
                 } else { // verified
                     ses.setAttribute("user", u);
                     responseObject.addProperty("message", "Successfully signed in!"); // verified User
+                    
+                    // Add user details to response
+                    JsonObject userObject = new JsonObject();
+                    userObject.addProperty("id", u.getId());
+                    userObject.addProperty("firstname", u.getFirst_name());
+                    userObject.addProperty("lastname", u.getLast_name());
+                    userObject.addProperty("email", u.getEmail());
+                    // userObject.addProperty("verification", u.getVerification());
+                    // userObject.addProperty("created_at", u.getCreated_at().toString());
+                    responseObject.add("user", userObject);
                 }
             }
             s.close();
