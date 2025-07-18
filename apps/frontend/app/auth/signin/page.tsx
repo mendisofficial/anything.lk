@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signinUser, verifyAccount } from "../hooks/useAuth";
 import { SigninData } from "../types";
+import { useAuth } from "../../context/AuthContext";
+import { ProtectedRoute } from "../../components/ProtectedRoute";
 
 export default function SigninPage() {
   const [formData, setFormData] = useState<SigninData>({
@@ -18,6 +20,7 @@ export default function SigninPage() {
   const [verificationCode, setVerificationCode] = useState("");
 
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,6 +42,10 @@ export default function SigninPage() {
           setShowVerificationForm(true);
         } else {
           setSuccessMessage(response.message);
+          // Update auth context with user data
+          if (response.user) {
+            login(response.user);
+          }
           setTimeout(() => {
             router.push("/");
           }, 2000);
@@ -91,7 +98,7 @@ export default function SigninPage() {
   };
 
   return (
-    <>
+    <ProtectedRoute requireAuth={false}>
       <div className="flex min-h-full flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -246,6 +253,6 @@ export default function SigninPage() {
           />
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }

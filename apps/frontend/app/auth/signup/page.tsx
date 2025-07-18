@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signupUser, verifyAccount } from "../hooks/useAuth";
 import { SignupData } from "../types";
+import { ProtectedRoute } from "../../components/ProtectedRoute";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState<SignupData>({
@@ -87,7 +88,7 @@ export default function SignupPage() {
   };
 
   return (
-    <>
+    <ProtectedRoute requireAuth={false}>
       <div className="flex min-h-full flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -284,6 +285,6 @@ export default function SignupPage() {
           />
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }
