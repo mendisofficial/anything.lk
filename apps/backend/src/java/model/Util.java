@@ -13,4 +13,9 @@ public class Util {
     public static boolean isPasswordValid(String password) {
         return password.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$");
     }
+    
+    // Postal code validation
+    public static boolean isCodeValid(String code) {
+        return code.matches("^\\d{4,5}$");
+    }
 }
