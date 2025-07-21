@@ -25,6 +25,8 @@
         <mapping class = "hibernate.Quality"/>
         
         <mapping class = "hibernate.Storage"/>
+        
+        <mapping class = "hibernate.Condition"/>
  
     </session-factory>
 </hibernate-configuration>
