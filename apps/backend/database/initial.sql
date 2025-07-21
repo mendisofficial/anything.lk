@@ -193,6 +193,8 @@ CREATE TABLE IF NOT EXISTS `AnythingLK`.`address` (
   `city_id` INT NOT NULL,
   `postal_code` VARCHAR(5) NOT NULL,
   `user_id` INT NOT NULL,
+  `label` VARCHAR(50) NULL, -- e.g., "Home", "Work"
+  `is_default` TINYINT(1) NOT NULL DEFAULT 0, -- 0 = not default, 1 = default
   PRIMARY KEY (`id`),
   INDEX `fk_address_city1_idx` (`city_id` ASC) VISIBLE,
   INDEX `fk_address_user1_idx` (`user_id` ASC) VISIBLE,
