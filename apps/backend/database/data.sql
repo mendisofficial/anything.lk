@@ -1,0 +1,22 @@
+-- list of cities into the `city` table.
+INSERT INTO `AnythingLK`.`city` (`name`) VALUES
+('Colombo'),
+('Kandy'),
+('Galle'),
+('Jaffna'),
+('Negombo'),
+('Anuradhapura'),
+('Ratnapura'),
+('Badulla'),
+('Kurunegala'),
+('Trincomalee'),
+('Matara'),
+('Batticaloa'),
+('Nuwara Eliya'),
+('Hambantota'),
+('Polonnaruwa'),
+('Vavuniya'),
+('Kalutara'),
+('Ampara'),
+('Monaragala'),
+('Puttalam');
