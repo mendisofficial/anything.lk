@@ -12,31 +12,38 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "address")
-public class Address implements Serializable{
+public class Address implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    
+
     @Column(name = "line1", nullable = false)
     private String lineOne;
-    
+
     @Column(name = "line2", nullable = false)
     private String lineTwo;
-    
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
-    
-    @Column(name = "postal_code", length = 5 , nullable = false)
+
+    @Column(name = "postal_code", length = 5, nullable = false)
     private String postalCode;
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
-    public Address() {   }
+
+    @Column(name = "label", length = 50)
+    private String label;
+
+    @Column(name = "is_default", nullable = false)
+    private boolean isDefault;
+
+    public Address() {
+    }
 
     public int getId() {
         return id;
@@ -85,5 +92,21 @@ public class Address implements Serializable{
     public void setUser(User user) {
         this.user = user;
     }
-    
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public boolean isIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
 }
