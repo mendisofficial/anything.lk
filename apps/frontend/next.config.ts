@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "tailwindcss.com",
+        port: "",
+        pathname: "/plus-assets/img/ecommerce-images/**",
+      },
     ],
   }
 };
