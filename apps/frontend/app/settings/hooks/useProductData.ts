@@ -52,14 +52,6 @@ const useProductData = () => {
                 withCredentials: true,
             });
 
-            // console.log("Full response:", response.data);
-            // console.log("Response status:", response.data.status);
-            // console.log("Brand list:", response.data.brandList);
-            // console.log("Model list:", response.data.modelList);
-            // console.log("Color list:", response.data.colorList);
-            // console.log("Quality list:", response.data.qualityList);
-            // console.log("Storage list:", response.data.storageList);
-
             if (response.data.status) {
                 setProductData({
                     brandList: response.data.brandList || [],

@@ -89,12 +89,6 @@ export default function AddProducts() {
     ? getModelsForBrand(parseInt(productData.brand))
     : [];
 
-  // Debug logs to check data
-  // console.log("Backend data:", backendData);
-  // console.log("Storage list:", backendData?.storageList);
-  // console.log("Color list:", backendData?.colorList);
-  // console.log("Quality list:", backendData?.qualityList);
-
   return (
     <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
       <form onSubmit={handleSubmit}>

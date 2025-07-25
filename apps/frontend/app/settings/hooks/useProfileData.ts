@@ -57,7 +57,6 @@ const useProfileData = () => {
                     withCredentials: true,
                 }
             );
-            console.log("Update response:", response);
             if (response.data.status) {
                 await fetchProfileData(); // Refetch data on success
             } else {

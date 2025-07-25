@@ -22,7 +22,6 @@ const useAddresses = () => {
             const response = await axios.get(`${API_BASE_URL}/AddressManagement`, {
                 withCredentials: true,
             });
-            console.log("Fetched addresses:", response);
             if (response.data.status) {
                 setAddresses(response.data.addressList || []);
             } else {
