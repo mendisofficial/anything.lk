@@ -1,7 +1,7 @@
 package model;
 
 public class Util {
-    public static String genrateCode() {
+    public static String generateCode() {
         int r = (int) (Math.random() * 1000000);
         return String.format("%06d", r);
     }
@@ -17,5 +17,13 @@ public class Util {
     // Postal code validation
     public static boolean isCodeValid(String code) {
         return code.matches("^\\d{4,5}$");
+    }
+
+    public static boolean isInteger(String text) {
+        return text.matches("^\\d+$");
+    }
+
+    public static boolean isDouble(String text) {
+        return text.matches("^\\d+(\\.\\d{2})?$");
     }
 }

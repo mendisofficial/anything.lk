@@ -67,7 +67,7 @@ public class SignUp extends HttpServlet {
                 u.setPassword(password);
 
                 // generate verification code
-                final String verificationCode = Util.genrateCode();
+                final String verificationCode = Util.generateCode();
                 u.setVerification(verificationCode);
                 
                 u.setCreated_at(new Date());
