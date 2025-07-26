@@ -27,6 +27,10 @@
         <mapping class = "hibernate.Storage"/>
         
         <mapping class = "hibernate.Condition"/>
+       
+        <mapping class = "hibernate.Status"/>
+        
+        <mapping class = "hibernate.Product"/>
  
     </session-factory>
 </hibernate-configuration>
