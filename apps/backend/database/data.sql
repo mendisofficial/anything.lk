@@ -84,4 +84,8 @@ INSERT INTO `AnythingLK`.`status` (`value`) VALUES
 ('Paid'),
 ('Processing'),
 ('Shipped'),
-('Delivered');
+('Delivered'),
+('Cancelled'),
+('Returned'),
+('Active'),
+('Inactive');
