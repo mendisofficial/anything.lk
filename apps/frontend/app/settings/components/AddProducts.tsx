@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import useProductData from "../hooks/useProductData";
+import useProductSubmission from "../hooks/useProductSubmission";
 import { Loading } from "@/app/components/Loading";
 
 export default function AddProducts() {
@@ -13,6 +14,12 @@ export default function AddProducts() {
     error,
     getModelsForBrand,
   } = useProductData();
+
+  const {
+    submitProduct,
+    loading: submissionLoading,
+    error: submissionError,
+  } = useProductSubmission();
 
   const [productData, setProductData] = useState({
     brand: "",
@@ -31,6 +38,9 @@ export default function AddProducts() {
     image2: null as File | null,
     image3: null as File | null,
   });
+
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -60,9 +70,127 @@ export default function AddProducts() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Product data:", productData);
-    console.log("Images:", images);
+
+    // Reset previous messages and clear any submission errors
+    setSubmitMessage(null);
+    setSubmitSuccess(false);
+
+    // Validate required fields
+    if (!productData.brand) {
+      setSubmitMessage("Please select a brand");
+      return;
+    }
+
+    if (!productData.model) {
+      setSubmitMessage("Please select a model");
+      return;
+    }
+
+    if (!productData.title.trim()) {
+      setSubmitMessage("Product title is required");
+      return;
+    }
+
+    if (!productData.description.trim()) {
+      setSubmitMessage("Product description is required");
+      return;
+    }
+
+    if (!productData.storage) {
+      setSubmitMessage("Please select storage");
+      return;
+    }
+
+    if (!productData.color) {
+      setSubmitMessage("Please select a color");
+      return;
+    }
+
+    if (!productData.condition) {
+      setSubmitMessage("Please select a condition");
+      return;
+    }
+
+    if (!productData.price || parseFloat(productData.price) <= 0) {
+      setSubmitMessage("Please enter a valid price");
+      return;
+    }
+
+    if (!productData.quantity || parseInt(productData.quantity) <= 0) {
+      setSubmitMessage("Please enter a valid quantity");
+      return;
+    }
+
+    if (!images.image1) {
+      setSubmitMessage("Image 1 is required");
+      return;
+    }
+
+    if (!images.image2) {
+      setSubmitMessage("Image 2 is required");
+      return;
+    }
+
+    if (!images.image3) {
+      setSubmitMessage("Image 3 is required");
+      return;
+    }
+
+    try {
+      const submissionData = {
+        brandId: productData.brand,
+        modelId: productData.model,
+        title: productData.title.trim(),
+        description: productData.description.trim(),
+        storageId: productData.storage,
+        colorId: productData.color,
+        conditionId: productData.condition,
+        price: productData.price,
+        qty: productData.quantity,
+        image1: images.image1,
+        image2: images.image2,
+        image3: images.image3,
+      };
+
+      const result = await submitProduct(submissionData);
+
+      if (result.status) {
+        setSubmitSuccess(true);
+        setSubmitMessage(result.message);
+
+        // Reset form on success
+        setProductData({
+          brand: "",
+          model: "",
+          title: "",
+          description: "",
+          storage: "",
+          color: "",
+          condition: "",
+          price: "",
+          quantity: "1",
+        });
+
+        setImages({
+          image1: null,
+          image2: null,
+          image3: null,
+        });
+
+        // Reset file inputs
+        const fileInputs = document.querySelectorAll(
+          'input[type="file"]'
+        ) as NodeListOf<HTMLInputElement>;
+        fileInputs.forEach((input) => {
+          input.value = "";
+        });
+      } else {
+        setSubmitMessage(result.message);
+      }
+    } catch (error) {
+      setSubmitMessage("An unexpected error occurred. Please try again.");
+      console.error("Product submission error:", error);
+    }
   };
 
   // Show loading state
@@ -511,13 +639,37 @@ export default function AddProducts() {
           </div>
         </div>
 
+        {/* Status Message */}
+        {(submitMessage || submissionError) && (
+          <div
+            className={`mt-4 p-4 rounded-md ${
+              submitSuccess
+                ? "bg-green-50 border border-green-200"
+                : "bg-red-50 border border-red-200"
+            }`}
+          >
+            <p
+              className={`text-sm ${
+                submitSuccess ? "text-green-800" : "text-red-800"
+              }`}
+            >
+              {submitMessage || submissionError}
+            </p>
+          </div>
+        )}
+
         {/* Submit Button */}
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-vivid-magenta px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-vivid-magenta-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vivid-magenta"
+            disabled={submissionLoading}
+            className={`rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-vivid-magenta ${
+              submissionLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-vivid-magenta hover:bg-vivid-magenta-hover"
+            }`}
           >
-            Add Product
+            {submissionLoading ? "Adding Product..." : "Add Product"}
           </button>
         </div>
       </form>
