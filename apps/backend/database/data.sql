@@ -77,3 +77,11 @@ INSERT INTO `AnythingLK`.`storage` (`value`) VALUES
 ('256 GB'),
 ('512 GB'),
 ('1 TB');
+
+-- list of status options into the `status` table.
+INSERT INTO `AnythingLK`.`status` (`value`) VALUES
+('Pending'),
+('Paid'),
+('Processing'),
+('Shipped'),
+('Delivered');
