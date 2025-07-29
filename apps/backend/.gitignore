@@ -60,3 +60,6 @@ nbdist/
 
 # vscode
 .vscode
+
+# product images
+/web/product-images/
