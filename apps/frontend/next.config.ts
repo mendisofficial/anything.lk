@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/plus-assets/img/ecommerce-images/**",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8090",
+        pathname: "/**",
+      },
     ],
   }
 };
