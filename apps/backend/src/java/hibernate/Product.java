@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "product")
@@ -58,6 +59,10 @@ public class Product implements Serializable {
 
     @Column(name = "created_at", nullable = false)
     private Date created_at;
+
+    // Not persisted; used to return the first image URL in API responses
+    @Transient
+    private String firstImage;
 
     public int getId() {
         return id;
@@ -153,6 +158,14 @@ public class Product implements Serializable {
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
+    }
+
+    public String getFirstImage() {
+        return firstImage;
+    }
+
+    public void setFirstImage(String firstImage) {
+        this.firstImage = firstImage;
     }
 
 }
