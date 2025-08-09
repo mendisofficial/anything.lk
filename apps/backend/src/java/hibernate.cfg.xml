@@ -31,6 +31,8 @@
         <mapping class = "hibernate.Status"/>
         
         <mapping class = "hibernate.Product"/>
+
+        <mapping class = "hibernate.Cart"/>
  
     </session-factory>
 </hibernate-configuration>
