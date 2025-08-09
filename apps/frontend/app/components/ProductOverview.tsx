@@ -12,6 +12,9 @@ import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { Product, ProductImage } from "../product/hooks/useSingleProduct";
+import useAddToCart from "../cart/hooks/useAddToCart";
+import { useToast } from "../context/ToastContext";
+import { useCart } from "../context/CartContext";
 
 interface ProductOverviewProps {
   product: Product | null;
@@ -26,6 +29,9 @@ export default function ProductOverview({
   product,
   productImages,
 }: ProductOverviewProps) {
+  const { addToCart, loading: adding } = useAddToCart();
+  const { success, error } = useToast();
+  const { increment } = useCart();
   if (!product) {
     return (
       <div className="bg-white">
@@ -79,12 +85,15 @@ export default function ProductOverview({
     },
   ];
 
-  const handleAddToCart = () => {
-    // TODO: Implement add to cart functionality
-    console.log("Adding to cart:", {
-      productId: product.id,
-      color: product.color.value,
-    });
+  const handleAddToCart = async () => {
+    if (!product) return;
+    const res = await addToCart(product.id, 1);
+    if (res.status) {
+      success(res.message || "Added to cart");
+      increment(1);
+    } else {
+      error(res.message || "Failed to add to cart");
+    }
   };
 
   return (
@@ -211,13 +220,18 @@ export default function ProductOverview({
               <div className="mt-10 flex">
                 <button
                   type="submit"
-                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full"
+                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full"
+                  disabled={adding || (product?.qty ?? 0) < 1}
                   onClick={(e) => {
                     e.preventDefault();
                     handleAddToCart();
                   }}
                 >
-                  Add to bag
+                  {adding
+                    ? "Adding..."
+                    : (product?.qty ?? 0) < 1
+                    ? "Out of stock"
+                    : "Add to bag"}
                 </button>
 
                 <button

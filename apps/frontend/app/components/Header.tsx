@@ -23,6 +23,12 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useCart } from "../context/CartContext";
+
+function CartBadge() {
+  const { cartCount } = useCart();
+  return <>{cartCount}</>;
+}
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 const navigation = {
@@ -585,7 +591,7 @@ export default function Header() {
 
                       <div className="flow-root">
                         <a
-                          href="#"
+                          href="/cart"
                           className="group -m-2 flex items-center p-2"
                         >
                           <ShoppingCartIcon
@@ -593,7 +599,8 @@ export default function Header() {
                             className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            0
+                            {/* cart count will be populated by CartBadge component */}
+                            <CartBadge />
                           </span>
                           <span className="sr-only">
                             items in cart, view bag
