@@ -22,23 +22,90 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useCart } from "../context/CartContext";
+import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
+import { logoutUser } from "../auth/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 function CartBadge() {
   const { cartCount } = useCart();
   return <>{cartCount}</>;
 }
 
-const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
+// const navigationTemplate = {
+//   categories: [
+//     {
+//       name: "Women",
+//       featured: [
+//         { name: "Sleep", href: "#" },
+//         { name: "Swimwear", href: "#" },
+//         { name: "Underwear", href: "#" },
+//       ],
+//       collection: [
+//         { name: "Everything", href: "#" },
+//         { name: "Core", href: "#" },
+//         { name: "New Arrivals", href: "#" },
+//         { name: "Sale", href: "#" },
+//       ],
+//       categories: [
+//         { name: "Basic Tees", href: "#" },
+//         { name: "Artwork Tees", href: "#" },
+//         { name: "Bottoms", href: "#" },
+//         { name: "Underwear", href: "#" },
+//         { name: "Accessories", href: "#" },
+//       ],
+//       brands: [
+//         { name: "Full Nelson", href: "#" },
+//         { name: "My Way", href: "#" },
+//         { name: "Re-Arranged", href: "#" },
+//         { name: "Counterfeit", href: "#" },
+//         { name: "Significant Other", href: "#" },
+//       ],
+//     },
+//     {
+//       name: "Men",
+//       featured: [
+//         { name: "Casual", href: "#" },
+//         { name: "Boxers", href: "#" },
+//         { name: "Outdoor", href: "#" },
+//       ],
+//       collection: [
+//         { name: "Everything", href: "#" },
+//         { name: "Core", href: "#" },
+//         { name: "New Arrivals", href: "#" },
+//         { name: "Sale", href: "#" },
+//       ],
+//       categories: [
+//         { name: "Artwork Tees", href: "#" },
+//         { name: "Pants", href: "#" },
+//         { name: "Accessories", href: "#" },
+//         { name: "Boxers", href: "#" },
+//         { name: "Basic Tees", href: "#" },
+//       ],
+//       brands: [
+//         { name: "Significant Other", href: "#" },
+//         { name: "My Way", href: "#" },
+//         { name: "Counterfeit", href: "#" },
+//         { name: "Re-Arranged", href: "#" },
+//         { name: "Full Nelson", href: "#" },
+//       ],
+//     },
+//   ],
+//   pages: [
+//     { name: "Company", href: "#" },
+//     { name: "Stores", href: "#" },
+//   ],
+// };
+
 const navigation = {
   categories: [
     {
-      name: "Women",
+      name: "Apple",
       featured: [
-        { name: "Sleep", href: "#" },
-        { name: "Swimwear", href: "#" },
-        { name: "Underwear", href: "#" },
+        { name: "iPhone", href: "#" },
+        { name: "iPad", href: "#" },
+        { name: "MacBook", href: "#" },
       ],
       collection: [
         { name: "Everything", href: "#" },
@@ -90,14 +157,26 @@ const navigation = {
       ],
     },
   ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
 };
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      const response = await logoutUser();
+      if (response.status) {
+        logout();
+        router.push("/auth/signin");
+      } else {
+        console.error("Logout failed:", response.message);
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <>
@@ -244,7 +323,7 @@ export default function Header() {
               </TabPanels>
             </TabGroup>
 
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+            {/* <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               {navigation.pages.map((page) => (
                 <div key={page.name} className="flow-root">
                   <a
@@ -255,47 +334,59 @@ export default function Header() {
                   </a>
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Create an account
-                </a>
-              </div>
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Sign in
-                </a>
-              </div>
-            </div>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {/* Currency selector */}
-              <form>
-                <div className="-ml-2 inline-grid grid-cols-1">
-                  <select
-                    id="mobile-currency"
-                    name="currency"
-                    aria-label="Currency"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-0.5 pr-7 pl-2 text-base font-medium text-gray-700 group-hover:text-gray-800 focus:outline-2 sm:text-sm/6"
-                  >
-                    {currencies.map((currency) => (
-                      <option key={currency}>{currency}</option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-1 size-5 self-center justify-self-end fill-gray-500"
-                  />
-                </div>
-              </form>
+              {isAuthenticated ? (
+                <>
+                  <div className="flow-root">
+                    <div className="-m-2 block p-2">
+                      <p className="font-medium text-gray-900">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="text-sm text-gray-500">{user?.email}</p>
+                    </div>
+                  </div>
+                  <div className="flow-root">
+                    <Link
+                      href="/settings"
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Account settings
+                    </Link>
+                  </div>
+                  <div className="flow-root">
+                    <button
+                      onClick={handleLogout}
+                      className="-m-2 block p-2 font-medium text-red-600 cursor-pointer"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flow-root">
+                    <Link
+                      href="/auth/signup"
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Create an account
+                    </Link>
+                  </div>
+                  <div className="flow-root">
+                    <Link
+                      href="/auth/signin"
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </DialogPanel>
         </div>
@@ -305,44 +396,41 @@ export default function Header() {
           {/* Top navigation */}
           <div className="bg-gray-900">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              {/* Currency selector */}
-              <form className="hidden lg:block lg:flex-1">
-                <div className="-ml-2 inline-grid grid-cols-1">
-                  <select
-                    id="desktop-currency"
-                    name="currency"
-                    aria-label="Currency"
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-900 py-0.5 pr-7 pl-2 text-left text-base font-medium text-white focus:outline-2 focus:-outline-offset-1 focus:outline-white sm:text-sm/6"
-                  >
-                    {currencies.map((currency) => (
-                      <option key={currency}>{currency}</option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-1 size-5 self-center justify-self-end fill-gray-300"
-                  />
-                </div>
-              </form>
-
               <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Get free delivery on orders over $100
+                Get free delivery on orders over 10,000 LKR
               </p>
 
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Create an account
-                </a>
-                <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Sign in
-                </a>
+                {isAuthenticated ? (
+                  <>
+                    <span className="text-sm text-white">
+                      Welcome, {user?.firstName} {user?.lastName}
+                    </span>
+                    <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm font-medium text-white hover:text-gray-100"
+                    >
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/auth/signup"
+                      className="text-sm font-medium text-white hover:text-gray-100"
+                    >
+                      Create an account
+                    </Link>
+                    <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
+                    <Link
+                      href="/auth/signin"
+                      className="text-sm font-medium text-white hover:text-gray-100"
+                    >
+                      Sign in
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -354,14 +442,14 @@ export default function Header() {
                 <div className="flex h-16 items-center justify-between">
                   {/* Logo (lg+) */}
                   <div className="hidden lg:flex lg:items-center">
-                    <a href="#">
+                    <Link href="/">
                       <span className="sr-only">Your Company</span>
                       <img
                         alt=""
                         src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                         className="h-8 w-auto"
                       />
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="hidden h-full lg:flex">
@@ -510,7 +598,7 @@ export default function Header() {
                             </PopoverPanel>
                           </Popover>
                         ))}
-                        {navigation.pages.map((page) => (
+                        {/* {navigation.pages.map((page) => (
                           <a
                             key={page.name}
                             href={page.href}
@@ -518,7 +606,7 @@ export default function Header() {
                           >
                             {page.name}
                           </a>
-                        ))}
+                        ))} */}
                       </div>
                     </PopoverGroup>
                   </div>
@@ -548,21 +636,21 @@ export default function Header() {
                   </div>
 
                   {/* Logo (lg-) */}
-                  <a href="#" className="lg:hidden">
+                  <Link href="/" className="lg:hidden">
                     <span className="sr-only">Your Company</span>
                     <img
                       alt=""
                       src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                       className="h-8 w-auto"
                     />
-                  </a>
+                  </Link>
 
                   <div className="flex flex-1 items-center justify-end">
                     <div className="flex items-center lg:ml-8">
                       <div className="flex space-x-8">
                         <div className="hidden lg:flex">
-                          <a
-                            href="#"
+                          <Link
+                            href="/search"
                             className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                           >
                             <span className="sr-only">Search</span>
@@ -570,17 +658,17 @@ export default function Header() {
                               aria-hidden="true"
                               className="size-6"
                             />
-                          </a>
+                          </Link>
                         </div>
 
                         <div className="flex">
-                          <a
-                            href="#"
+                          <Link
+                            href="/settings"
                             className="-m-2 p-2 text-gray-400 hover:text-gray-500"
                           >
                             <span className="sr-only">Account</span>
                             <UserIcon aria-hidden="true" className="size-6" />
-                          </a>
+                          </Link>
                         </div>
                       </div>
 
@@ -590,7 +678,7 @@ export default function Header() {
                       />
 
                       <div className="flow-root">
-                        <a
+                        <Link
                           href="/cart"
                           className="group -m-2 flex items-center p-2"
                         >
@@ -605,7 +693,7 @@ export default function Header() {
                           <span className="sr-only">
                             items in cart, view bag
                           </span>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
