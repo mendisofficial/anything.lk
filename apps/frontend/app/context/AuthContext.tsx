@@ -12,9 +12,9 @@ import { sessionValidation } from "../auth/hooks/useAuth";
 interface User {
   id: string;
   email: string;
-  firstname: string;
-  lastname: string;
-  // Add other user properties as needed
+  firstName: string;
+  lastName: string;
+  verified: boolean;
 }
 
 interface AuthContextType {
