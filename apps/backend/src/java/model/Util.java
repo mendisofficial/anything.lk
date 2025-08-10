@@ -26,4 +26,8 @@ public class Util {
     public static boolean isDouble(String text) {
         return text.matches("^\\d+(\\.\\d{2})?$");
     }
+    
+    public static boolean isMobileValid(String mobile) {
+        return mobile.matches("^07[0145678][0-9]{7}$");
+    }
 }
