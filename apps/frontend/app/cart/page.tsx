@@ -13,10 +13,14 @@ import StoreFrontTemplate from "../components/StoreFrontTemplate";
 import useCartItems from "./hooks/useCartItems";
 import { useCart } from "../context/CartContext";
 import { useEffect } from "react";
+import useCartActions from "./hooks/useCartActions";
+import { useToast } from "../context/ToastContext";
 
 export default function CartPage() {
   const { items, loading, error, subtotal, refetch } = useCartItems();
   const { setCartCount } = useCart();
+  const { updateQty, removeItem, isUpdating, isRemoving } = useCartActions();
+  const { error: toastError } = useToast();
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
   useEffect(() => {
@@ -92,10 +96,39 @@ export default function CartPage() {
                           </div>
 
                           <div className="mt-4 sm:mt-0 sm:pr-9">
-                            <div className="inline-grid w-full max-w-20 grid-cols-1">
-                              <div className="col-start-1 row-start-1 rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6">
-                                Qty: {it.qty}
-                              </div>
+                            <div className="inline-grid w-full max-w-24 grid-cols-1">
+                              <select
+                                aria-label={`Quantity, ${p.title}`}
+                                className="col-start-1 row-start-1 appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                value={it.qty}
+                                onChange={async (e) => {
+                                  const newQty =
+                                    parseInt(e.target.value, 10) || 1;
+                                  const res = await updateQty(p.id, newQty);
+                                  if (res.status) {
+                                    await refetch();
+                                  } else {
+                                    toastError(
+                                      res.message || "Failed to update quantity"
+                                    );
+                                  }
+                                }}
+                                disabled={isUpdating(p.id)}
+                              >
+                                {Array.from(
+                                  {
+                                    length: Math.min(
+                                      Math.max(p.qty ?? 8, 1),
+                                      8
+                                    ),
+                                  },
+                                  (_, i) => i + 1
+                                ).map((n) => (
+                                  <option key={n} value={n}>
+                                    {n}
+                                  </option>
+                                ))}
+                              </select>
                               <ChevronDownIcon
                                 aria-hidden="true"
                                 className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
@@ -105,9 +138,18 @@ export default function CartPage() {
                             <div className="absolute top-0 right-0">
                               <button
                                 type="button"
-                                className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500"
-                                disabled
-                                title="Remove coming soon"
+                                className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500 disabled:opacity-50 cursor-pointer"
+                                disabled={isRemoving(p.id)}
+                                onClick={async () => {
+                                  const res = await removeItem(p.id);
+                                  if (res.status) {
+                                    await refetch();
+                                  } else {
+                                    toastError(
+                                      res.message || "Failed to remove item"
+                                    );
+                                  }
+                                }}
                               >
                                 <span className="sr-only">Remove</span>
                                 <XMarkIconMini
