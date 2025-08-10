@@ -71,8 +71,8 @@ public class SignIn extends HttpServlet {
                     // Add user details to response
                     JsonObject userObject = new JsonObject();
                     userObject.addProperty("id", u.getId());
-                    userObject.addProperty("firstname", u.getFirst_name());
-                    userObject.addProperty("lastname", u.getLast_name());
+                    userObject.addProperty("firstName", u.getFirst_name());
+                    userObject.addProperty("lastName", u.getLast_name());
                     userObject.addProperty("email", u.getEmail());
                     // userObject.addProperty("verification", u.getVerification());
                     // userObject.addProperty("created_at", u.getCreated_at().toString());
