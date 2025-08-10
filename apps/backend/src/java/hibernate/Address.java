@@ -36,11 +36,38 @@ public class Address implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "label", length = 50)
-    private String label;
+    @Column(name = "mobile", length = 10, nullable = false)
+    private String mobile;
+    
+    @Column(name = "first_name", length = 45)
+    String firstName;
+    
+    @Column(name = "last_name", length = 45)
+    String lastName;
 
-    @Column(name = "is_default", nullable = false)
-    private boolean isDefault;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public Address() {
     }
@@ -92,21 +119,4 @@ public class Address implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public boolean isIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
 }
