@@ -113,3 +113,20 @@ VALUES
 ('OnePlus 11 - White', 7, 'Powerful OnePlus 11 in white, barely used.', 200000.00, 1, 2, 5, 1, 8, 1, NOW()),
 ('Realme 11x - Silver', 14, 'Sleek Realme 11x in silver, great value.', 80000.00, 2, 6, 2, 2, 8, 1, NOW()),
 ('Vivo Y100 - Gold', 12, 'Stylish gold Vivo Y100, lightly refurbished.', 95000.00, 1, 7, 3, 5, 8, 1, NOW());
+
+INSERT INTO `AnythingLK`.`delivery_type` (`name`, `price`)
+VALUES
+('Within Colombo', 499.00),
+('Outside Colombo', 999.00);
+
+INSERT INTO `AnythingLK`.`order_status` (`value`)
+VALUES
+('Pending'),
+('Processing'),
+('Shipped'),
+('Out for Delivery'),
+('Delivered'),
+('Cancelled'),
+('Returned'),
+('Refunded');
+
