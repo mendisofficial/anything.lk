@@ -83,7 +83,6 @@ public class LoadSingleProduct extends HttpServlet {
                     product.getUser().setEmail(null);
                     product.getUser().setPassword(null);
                     product.getUser().setVerification(null);
-                    product.getUser().setId(-1);
                     product.getUser().setCreated_at(null);
 
                     // Get product images
@@ -108,7 +107,6 @@ public class LoadSingleProduct extends HttpServlet {
                         pr.getUser().setEmail(null);
                         pr.getUser().setPassword(null);
                         pr.getUser().setVerification(null);
-                        pr.getUser().setId(-1);
                         pr.getUser().setCreated_at(null);
                         
                         // Get images for this similar product
