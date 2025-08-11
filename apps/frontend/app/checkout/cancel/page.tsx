@@ -29,7 +29,7 @@ export default function PaymentCancelPage() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/checkout"
-              className="w-full sm:w-auto rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden text-center"
+              className="w-full sm:w-auto rounded-md border border-transparent bg-vivid-magenta px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-vivid-magenta-hover focus:ring-2 focus:ring-vivid-magenta focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden text-center"
             >
               Return to checkout
             </Link>

@@ -38,30 +38,26 @@ export default function PaymentSuccessPage() {
           </p>
 
           <div className="mx-auto mt-8 w-full max-w-md text-left">
-            <dl className="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-gray-50">
-              {orderRef && (
-                <div className="flex items-center justify-between px-4 py-3">
-                  <dt className="text-sm text-gray-600">Order reference</dt>
-                  <dd className="text-sm font-medium text-gray-900">
-                    {orderRef}
-                  </dd>
-                </div>
-              )}
-              {amount && (
-                <div className="flex items-center justify-between px-4 py-3">
-                  <dt className="text-sm text-gray-600">Amount paid</dt>
-                  <dd className="text-sm font-medium text-gray-900">
-                    {amount}
-                  </dd>
-                </div>
-              )}
-            </dl>
+            {orderRef && (
+              <div className="flex items-center justify-between px-4 py-3">
+                <dt className="text-sm text-gray-600">Order reference</dt>
+                <dd className="text-sm font-medium text-gray-900">
+                  {orderRef}
+                </dd>
+              </div>
+            )}
+            {amount && (
+              <div className="flex items-center justify-between px-4 py-3">
+                <dt className="text-sm text-gray-600">Amount paid</dt>
+                <dd className="text-sm font-medium text-gray-900">{amount}</dd>
+              </div>
+            )}
           </div>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              href="/"
-              className="w-full sm:w-auto rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden text-center"
+              href="/search"
+              className="w-full sm:w-auto rounded-md border border-transparent bg-vivid-magenta px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-vivid-magenta-hover focus:ring-2 focus:ring-vivid-magenta focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden text-center"
             >
               Continue shopping
             </Link>
