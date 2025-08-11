@@ -1,29 +1,31 @@
 "use client";
 
+import Image from "next/image";
+
 const footerNavigation = {
   products: [
-    { name: "Bags", href: "#" },
-    { name: "Tees", href: "#" },
-    { name: "Objects", href: "#" },
-    { name: "Home Goods", href: "#" },
+    { name: "Laptops & Computers", href: "#" },
+    { name: "Mobile Phones", href: "#" },
+    { name: "Tablets & Wearables", href: "#" },
+    { name: "Gaming & Consoles", href: "#" },
     { name: "Accessories", href: "#" },
   ],
   customerService: [
-    { name: "Contact", href: "#" },
-    { name: "Shipping", href: "#" },
-    { name: "Returns", href: "#" },
-    { name: "Warranty", href: "#" },
+    { name: "Contact Us", href: "#" },
+    { name: "Shipping Information", href: "#" },
+    { name: "Returns & Exchanges", href: "#" },
+    { name: "Warranty Claims", href: "#" },
     { name: "Secure Payments", href: "#" },
-    { name: "FAQ", href: "#" },
-    { name: "Find a store", href: "#" },
+    { name: "FAQs", href: "#" },
+    { name: "Store Locator", href: "#" },
   ],
   company: [
-    { name: "Who we are", href: "#" },
-    { name: "Sustainability", href: "#" },
-    { name: "Press", href: "#" },
+    { name: "About Anything.LK", href: "#" },
+    { name: "Our Commitment", href: "#" },
+    { name: "Press & Media", href: "#" },
     { name: "Careers", href: "#" },
     { name: "Terms & Conditions", href: "#" },
-    { name: "Privacy", href: "#" },
+    { name: "Privacy Policy", href: "#" },
   ],
   legal: [
     { name: "Terms of Service", href: "#" },
@@ -48,10 +50,12 @@ export default function Footer() {
         <div className="border-t border-gray-200">
           <div className="pt-16 pb-20">
             <div className="md:flex md:justify-center">
-              <img
-                alt=""
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
+              <Image
+                alt="Anything.lk"
+                src="/logo.png"
+                className="h-32 w-auto"
+                width={500}
+                height={500}
               />
             </div>
             <div className="mx-auto mt-16 max-w-5xl xl:grid xl:grid-cols-2 xl:gap-8">
@@ -152,7 +156,7 @@ export default function Footer() {
                   <div className="mt-3 sm:mt-0 sm:ml-4 sm:shrink-0">
                     <button
                       type="submit"
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white focus:outline-hidden"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-vivid-magenta px-4 py-2 text-base font-medium text-white shadow-xs hover:bg-vivid-magenta-hover focus:ring-2 focus:ring-vivid-magenta focus:ring-offset-2 focus:ring-offset-white focus:outline-hidden"
                     >
                       Sign up
                     </button>
@@ -163,12 +167,13 @@ export default function Footer() {
 
             <div className="relative mt-6 flex items-center px-6 py-12 sm:px-10 sm:py-16 lg:mt-0">
               <div className="absolute inset-0 overflow-hidden rounded-lg">
-                <img
+                <Image
                   alt=""
                   src="https://tailwindcss.com/plus-assets/img/ecommerce-images/footer-02-exclusive-sale.jpg"
                   className="size-full object-cover saturate-0 filter"
+                  layout="fill"
                 />
-                <div className="absolute inset-0 bg-indigo-600/90" />
+                <div className="absolute inset-0 bg-vivid-magenta/60" />
               </div>
               <div className="relative mx-auto max-w-sm text-center">
                 <h3 className="text-2xl font-bold tracking-tight text-white">
@@ -192,7 +197,7 @@ export default function Footer() {
         <div className="py-10 md:flex md:items-center md:justify-between">
           <div className="text-center md:text-left">
             <p className="text-sm text-gray-500">
-              &copy; 2021 All Rights Reserved
+              &copy; 2025 All Rights Reserved. Anything.LK
             </p>
           </div>
 
@@ -207,21 +212,6 @@ export default function Footer() {
                   {item.name}
                 </a>
               ))}
-            </div>
-
-            <div className="ml-6 border-l border-gray-200 pl-6">
-              <a
-                href="#"
-                className="flex items-center text-gray-500 hover:text-gray-600"
-              >
-                <img
-                  alt=""
-                  src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg"
-                  className="h-auto w-5 shrink-0"
-                />
-                <span className="ml-3 text-sm">Change</span>
-                <span className="sr-only">location and currency</span>
-              </a>
             </div>
           </div>
         </div>
