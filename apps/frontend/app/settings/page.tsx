@@ -12,6 +12,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import AccountDetails from "./components/AccountDetails";
 import AddProducts from "./components/AddProducts";
 import Addresses from "./components/Addresses";
+import MyProducts from "./components/MyProducts";
 import StoreFrontTemplate from "../components/StoreFrontTemplate";
 
 const sideNavigation = [
@@ -84,6 +85,7 @@ export default function SettingsPage() {
           <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20">
             {activeTab === "Account Details" && <AccountDetails />}
             {activeTab === "Add Products" && <AddProducts />}
+            {activeTab === "Product Listing" && <MyProducts />}
             {activeTab === "Addresses" && <Addresses />}
           </main>
         </div>
