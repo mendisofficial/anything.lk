@@ -23,6 +23,12 @@ interface ProductGridProps {
 
 export default function ProductGrid({ products, loading }: ProductGridProps) {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  const joinUrl = (base: string, path?: string) => {
+    if (!path) return "https://placehold.co/400x400";
+    const b = base.replace(/\/?$/, "");
+    const p = path.startsWith("/") ? path : `/${path}`;
+    return `${b}${p}`;
+  };
   return (
     <section
       aria-labelledby="products-heading"
@@ -51,9 +57,7 @@ export default function ProductGrid({ products, loading }: ProductGridProps) {
           Array.isArray(products) &&
           products.length > 0 &&
           products.map((product) => {
-            const imageSrc = product.firstImage
-              ? `${apiBase}${product.firstImage}`
-              : "https://placehold.co/400x400";
+            const imageSrc = joinUrl(apiBase, product.firstImage);
             const brand = product.model?.brand?.name || "";
             const color = product.color?.value || "";
             return (
