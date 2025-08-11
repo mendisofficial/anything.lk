@@ -7,8 +7,10 @@ import useAddresses from "../hooks/useAddresses";
 import useCities from "../hooks/useCities";
 import { AddressPayload, Address } from "../hooks/types";
 import { Loading } from "@/app/components/Loading";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function Addresses() {
+  const { user } = useAuth();
   const {
     addresses,
     loading: addressLoading,
@@ -36,7 +38,19 @@ export default function Addresses() {
     cityId: 0,
     label: "",
     isDefault: false,
+    firstName: "",
+    lastName: "",
+    mobile: "",
   });
+
+  // Keep first/last name synced with logged-in user
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+    }));
+  }, [user]);
 
   const resetForm = () => {
     setFormData({
@@ -46,6 +60,9 @@ export default function Addresses() {
       cityId: 0,
       label: "",
       isDefault: false,
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      mobile: "",
     });
     setShowAddForm(false);
     setEditingAddress(null);
@@ -74,13 +91,18 @@ export default function Addresses() {
     e.preventDefault();
 
     let success = false;
+    const payload: AddressPayload = {
+      ...formData,
+      firstName: user?.firstName || formData.firstName,
+      lastName: user?.lastName || formData.lastName,
+    };
     if (editingAddress) {
       success = await updateAddress({
-        ...formData,
+        ...payload,
         addressId: editingAddress.id,
       });
     } else {
-      success = await addAddress(formData);
+      success = await addAddress(payload);
     }
 
     if (success) {
@@ -96,6 +118,9 @@ export default function Addresses() {
       cityId: address.city.id,
       label: address.label,
       isDefault: address.isDefault,
+      firstName: user?.firstName || address.firstName || "",
+      lastName: user?.lastName || address.lastName || "",
+      mobile: address.mobile || "",
     });
     setEditingAddress(address);
     setShowAddForm(true);
@@ -130,7 +155,8 @@ export default function Addresses() {
     formData.lineTwo.trim() !== "" &&
     formData.postalCode.trim() !== "" &&
     formData.label.trim() !== "" &&
-    formData.cityId > 0;
+    formData.cityId > 0 &&
+    formData.mobile.trim() !== "";
 
   return (
     <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
@@ -199,6 +225,7 @@ export default function Addresses() {
                       <p>
                         {address.city.name}, {address.postalCode}
                       </p>
+                      {address.mobile && <p>Mobile: {address.mobile}</p>}
                     </div>
                   </div>
                   <div className="flex items-center gap-x-2">
@@ -241,6 +268,38 @@ export default function Addresses() {
             </div>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="col-span-full">
+                <label
+                  htmlFor="mobile"
+                  className="block text-sm/6 font-medium text-gray-900"
+                >
+                  Mobile
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="mobile"
+                    name="mobile"
+                    type="tel"
+                    placeholder="07XXXXXXXX"
+                    value={formData.mobile}
+                    onChange={handleInputChange}
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-vivid-magenta sm:text-sm/6"
+                  />
+                </div>
+              </div>
+
+              {/* Hidden fields auto-filled from logged-in user */}
+              <input
+                type="hidden"
+                name="firstName"
+                value={user?.firstName || formData.firstName}
+              />
+              <input
+                type="hidden"
+                name="lastName"
+                value={user?.lastName || formData.lastName}
+              />
+
               <div className="col-span-full">
                 <label
                   htmlFor="label"

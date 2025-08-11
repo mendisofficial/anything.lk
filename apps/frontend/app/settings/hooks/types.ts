@@ -17,6 +17,9 @@ export interface Address {
     city: City;
     label: string;
     isDefault: boolean;
+    mobile: string;
+    firstName?: string;
+    lastName?: string;
 }
 
 export interface ProfileUpdatePayload {
@@ -32,6 +35,10 @@ export interface AddressPayload {
     label: string;
     isDefault: boolean;
     addressId?: number; // For updates
+    // New required fields by backend
+    firstName: string;
+    lastName: string;
+    mobile: string;
 }
 
 export interface PasswordUpdatePayload {
