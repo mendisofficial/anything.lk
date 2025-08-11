@@ -46,7 +46,7 @@ public class AddressManagement extends HttpServlet {
                 
                 @SuppressWarnings("unchecked")
                 List<Address> addressList = c.list();
-                
+
                 responseObject.addProperty("status", true);
                 responseObject.add("addressList", gson.toJsonTree(addressList));
                 
@@ -72,16 +72,23 @@ public class AddressManagement extends HttpServlet {
         responseObject.addProperty("status", false);
         
         // Extract address data from request
+        String firstName = addressData.has("firstName") ? addressData.get("firstName").getAsString() : "";
+        String lastName = addressData.has("lastName") ? addressData.get("lastName").getAsString() : "";
         String lineOne = addressData.has("lineOne") ? addressData.get("lineOne").getAsString() : "";
         String lineTwo = addressData.has("lineTwo") ? addressData.get("lineTwo").getAsString() : "";
         String postalCode = addressData.has("postalCode") ? addressData.get("postalCode").getAsString() : "";
+        String mobile = addressData.has("mobile") ? addressData.get("mobile").getAsString() : "";
         String label = addressData.has("label") ? addressData.get("label").getAsString() : "";
         boolean isDefault = addressData.has("isDefault") ? addressData.get("isDefault").getAsBoolean() : false;
         int cityId = addressData.has("cityId") ? addressData.get("cityId").getAsInt() : 0;
         int addressId = addressData.has("addressId") ? addressData.get("addressId").getAsInt() : 0; // For updates
         
         // Validation
-        if (lineOne.isEmpty()) {
+        if (firstName.isEmpty()) {
+            responseObject.addProperty("message", "First name is required");
+        } else if (lastName.isEmpty()) {
+            responseObject.addProperty("message", "Last name is required");
+        } else if (lineOne.isEmpty()) {
             responseObject.addProperty("message", "Address line one is required");
         } else if (lineTwo.isEmpty()) {
             responseObject.addProperty("message", "Address line two is required");
@@ -89,6 +96,10 @@ public class AddressManagement extends HttpServlet {
             responseObject.addProperty("message", "Postal code is required");
         } else if (!Util.isCodeValid(postalCode)) {
             responseObject.addProperty("message", "Enter correct postal code format");
+        } else if (mobile.isEmpty()) {
+            responseObject.addProperty("message", "Mobile number is required");
+        } else if (!Util.isMobileValid(mobile)) {
+            responseObject.addProperty("message", "Invalid mobile number");
         } else if (cityId == 0) {
             responseObject.addProperty("message", "Please select a city");
         } else if (label.isEmpty()) {
@@ -149,10 +160,13 @@ public class AddressManagement extends HttpServlet {
                         }
                         
                         // Set address properties
+                        address.setFirstName(firstName);
+                        address.setLastName(lastName);
                         address.setLineOne(lineOne);
                         address.setLineTwo(lineTwo);
                         address.setPostalCode(postalCode);
                         address.setCity(city);
+                        address.setMobile(mobile);
                         address.setLabel(label);
                         address.setIsDefault(isDefault);
                         
