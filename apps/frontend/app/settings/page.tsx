@@ -7,6 +7,7 @@ import {
   ArchiveBoxArrowDownIcon,
   ArchiveBoxIcon,
   HomeIcon,
+  CircleStackIcon,
 } from "@heroicons/react/24/outline";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import AccountDetails from "./components/AccountDetails";
@@ -15,6 +16,7 @@ import Addresses from "./components/Addresses";
 import MyProducts from "./components/MyProducts";
 import MyCollections from "./components/MyCollections";
 import StoreFrontTemplate from "../components/StoreFrontTemplate";
+import Orders from "./components/Orders";
 
 const sideNavigation = [
   {
@@ -28,7 +30,7 @@ const sideNavigation = [
     icon: ArchiveBoxArrowDownIcon,
   },
   { id: "Product Listing", name: "Product Listing", icon: ArchiveBoxIcon },
-  { id: "Collections", name: "Collections", icon: ArchiveBoxIcon },
+  { id: "Collections", name: "Collections", icon: CircleStackIcon },
   { id: "Orders", name: "Orders", icon: CubeIcon },
   { id: "Addresses", name: "Addresses", icon: HomeIcon },
 ];
@@ -89,6 +91,7 @@ export default function SettingsPage() {
             {activeTab === "Add Products" && <AddProducts />}
             {activeTab === "Product Listing" && <MyProducts />}
             {activeTab === "Collections" && <MyCollections />}
+            {activeTab === "Orders" && <Orders />}
             {activeTab === "Addresses" && <Addresses />}
           </main>
         </div>
