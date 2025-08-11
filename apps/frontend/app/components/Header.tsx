@@ -27,136 +27,106 @@ import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { logoutUser } from "../auth/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function CartBadge() {
   const { cartCount } = useCart();
   return <>{cartCount}</>;
 }
 
-// const navigationTemplate = {
-//   categories: [
-//     {
-//       name: "Women",
-//       featured: [
-//         { name: "Sleep", href: "#" },
-//         { name: "Swimwear", href: "#" },
-//         { name: "Underwear", href: "#" },
-//       ],
-//       collection: [
-//         { name: "Everything", href: "#" },
-//         { name: "Core", href: "#" },
-//         { name: "New Arrivals", href: "#" },
-//         { name: "Sale", href: "#" },
-//       ],
-//       categories: [
-//         { name: "Basic Tees", href: "#" },
-//         { name: "Artwork Tees", href: "#" },
-//         { name: "Bottoms", href: "#" },
-//         { name: "Underwear", href: "#" },
-//         { name: "Accessories", href: "#" },
-//       ],
-//       brands: [
-//         { name: "Full Nelson", href: "#" },
-//         { name: "My Way", href: "#" },
-//         { name: "Re-Arranged", href: "#" },
-//         { name: "Counterfeit", href: "#" },
-//         { name: "Significant Other", href: "#" },
-//       ],
-//     },
-//     {
-//       name: "Men",
-//       featured: [
-//         { name: "Casual", href: "#" },
-//         { name: "Boxers", href: "#" },
-//         { name: "Outdoor", href: "#" },
-//       ],
-//       collection: [
-//         { name: "Everything", href: "#" },
-//         { name: "Core", href: "#" },
-//         { name: "New Arrivals", href: "#" },
-//         { name: "Sale", href: "#" },
-//       ],
-//       categories: [
-//         { name: "Artwork Tees", href: "#" },
-//         { name: "Pants", href: "#" },
-//         { name: "Accessories", href: "#" },
-//         { name: "Boxers", href: "#" },
-//         { name: "Basic Tees", href: "#" },
-//       ],
-//       brands: [
-//         { name: "Significant Other", href: "#" },
-//         { name: "My Way", href: "#" },
-//         { name: "Counterfeit", href: "#" },
-//         { name: "Re-Arranged", href: "#" },
-//         { name: "Full Nelson", href: "#" },
-//       ],
-//     },
-//   ],
-//   pages: [
-//     { name: "Company", href: "#" },
-//     { name: "Stores", href: "#" },
-//   ],
-// };
-
 const navigation = {
   categories: [
     {
-      name: "Apple",
+      name: "Laptops & Computers",
       featured: [
-        { name: "iPhone", href: "#" },
-        { name: "iPad", href: "#" },
-        { name: "MacBook", href: "#" },
+        { name: "Gaming Laptops", href: "#" },
+        { name: "Business Laptops", href: "#" },
+        { name: "Desktops & All-in-One PCs", href: "#" },
       ],
       collection: [
-        { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
+        { name: "All Laptops", href: "#" },
         { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
+        { name: "Best Sellers", href: "#" },
+        { name: "On Sale", href: "#" },
       ],
       categories: [
-        { name: "Basic Tees", href: "#" },
-        { name: "Artwork Tees", href: "#" },
-        { name: "Bottoms", href: "#" },
-        { name: "Underwear", href: "#" },
-        { name: "Accessories", href: "#" },
+        { name: "Windows Laptops", href: "#" },
+        { name: "MacBooks", href: "#" },
+        { name: "Chromebooks", href: "#" },
+        { name: "Custom PCs", href: "#" },
+        { name: "Computer Accessories", href: "#" },
       ],
       brands: [
-        { name: "Full Nelson", href: "#" },
-        { name: "My Way", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Counterfeit", href: "#" },
-        { name: "Significant Other", href: "#" },
+        { name: "Apple", href: "#" },
+        { name: "Dell", href: "#" },
+        { name: "HP", href: "#" },
+        { name: "Asus", href: "#" },
+        { name: "Lenovo", href: "#" },
       ],
     },
     {
-      name: "Men",
+      name: "Mobile & Tablets",
       featured: [
-        { name: "Casual", href: "#" },
-        { name: "Boxers", href: "#" },
-        { name: "Outdoor", href: "#" },
+        { name: "Smartphones", href: "#" },
+        { name: "Tablets", href: "#" },
+        { name: "Smartwatches", href: "#" },
       ],
       collection: [
-        { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
+        { name: "All Devices", href: "#" },
         { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
+        { name: "Best Sellers", href: "#" },
+        { name: "On Sale", href: "#" },
       ],
       categories: [
-        { name: "Artwork Tees", href: "#" },
-        { name: "Pants", href: "#" },
-        { name: "Accessories", href: "#" },
-        { name: "Boxers", href: "#" },
-        { name: "Basic Tees", href: "#" },
+        { name: "Android Phones", href: "#" },
+        { name: "iPhones", href: "#" },
+        { name: "Tablets", href: "#" },
+        { name: "Wearables", href: "#" },
+        { name: "Mobile Accessories", href: "#" },
       ],
       brands: [
-        { name: "Significant Other", href: "#" },
-        { name: "My Way", href: "#" },
-        { name: "Counterfeit", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Full Nelson", href: "#" },
+        { name: "Apple", href: "#" },
+        { name: "Samsung", href: "#" },
+        { name: "Xiaomi", href: "#" },
+        { name: "OnePlus", href: "#" },
+        { name: "Huawei", href: "#" },
+      ],
+    },
+    {
+      name: "Accessories & Gadgets",
+      featured: [
+        { name: "Headphones", href: "#" },
+        { name: "Keyboards & Mice", href: "#" },
+        { name: "Chargers & Power Banks", href: "#" },
+      ],
+      collection: [
+        { name: "All Accessories", href: "#" },
+        { name: "Trending Now", href: "#" },
+        { name: "New Arrivals", href: "#" },
+        { name: "On Sale", href: "#" },
+      ],
+      categories: [
+        { name: "Audio Devices", href: "#" },
+        { name: "Computer Peripherals", href: "#" },
+        { name: "Storage Devices", href: "#" },
+        { name: "Smart Home Devices", href: "#" },
+        { name: "Gaming Accessories", href: "#" },
+      ],
+      brands: [
+        { name: "Logitech", href: "#" },
+        { name: "Sony", href: "#" },
+        { name: "JBL", href: "#" },
+        { name: "Anker", href: "#" },
+        { name: "Razer", href: "#" },
       ],
     },
   ],
+  // pages: [
+  //   { name: "About Us", href: "#" },
+  //   { name: "Stores", href: "#" },
+  //   { name: "Contact", href: "#" },
+  //   { name: "Support", href: "#" },
+  // ],
 };
 
 export default function Header() {
@@ -444,10 +414,12 @@ export default function Header() {
                   <div className="hidden lg:flex lg:items-center">
                     <Link href="/">
                       <span className="sr-only">Your Company</span>
-                      <img
-                        alt=""
-                        src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                        className="h-8 w-auto"
+                      <Image
+                        alt="Anything.lk"
+                        src="/text-logo.png"
+                        className="h-12 w-auto"
+                        width={500}
+                        height={500}
                       />
                     </Link>
                   </div>
@@ -623,7 +595,7 @@ export default function Header() {
                     </button>
 
                     {/* Search */}
-                    <a
+                    <Link
                       href="#"
                       className="ml-2 p-2 text-gray-400 hover:text-gray-500"
                     >
@@ -632,16 +604,18 @@ export default function Header() {
                         aria-hidden="true"
                         className="size-6"
                       />
-                    </a>
+                    </Link>
                   </div>
 
                   {/* Logo (lg-) */}
                   <Link href="/" className="lg:hidden">
                     <span className="sr-only">Your Company</span>
-                    <img
-                      alt=""
-                      src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                      className="h-8 w-auto"
+                    <Image
+                      alt="Anything.lk"
+                      src="/text-logo.png"
+                      className="h-12 w-auto"
+                      width={500}
+                      height={500}
                     />
                   </Link>
 
