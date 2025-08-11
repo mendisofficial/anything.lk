@@ -90,6 +90,16 @@ INSERT INTO `AnythingLK`.`status` (`value`) VALUES
 ('Active'),
 ('Inactive');
 
+-- seed a demo user to satisfy product user_id FKs and enable collections
+INSERT INTO `AnythingLK`.`user` (`first_name`, `last_name`, `email`, `password`, `verification`, `created_at`)
+VALUES ('Demo', 'User', 'user@anything.lk', 'Pass1234', 'Verified', NOW());
+
+-- create a few sample collections for the demo user
+INSERT INTO `AnythingLK`.`collection` (`name`, `slug`, `description`, `is_public`, `user_id`, `created_at`) VALUES
+('Tech Deals', 'tech-deals', 'Top picks and promos on popular phones', 1, 1, NOW()),
+('My Favorites', 'my-favorites', 'Personal shortlist of favorites', 0, 1, NOW()),
+('Budget Picks', 'budget-picks', 'Great value devices under budget', 1, 1, NOW());
+
 INSERT INTO `AnythingLK`.`product`
 (`title`, `model_id`, `description`, `price`, `qty`, `color_id`, `storage_id`, `condition_id`, `status_id`, `user_id`, `created_at`)
 VALUES
@@ -113,6 +123,17 @@ VALUES
 ('OnePlus 11 - White', 7, 'Powerful OnePlus 11 in white, barely used.', 2000.00, 1, 2, 5, 1, 8, 1, NOW()),
 ('Realme 11x - Silver', 14, 'Sleek Realme 11x in silver, great value.', 800.00, 2, 6, 2, 2, 8, 1, NOW()),
 ('Vivo Y100 - Gold', 12, 'Stylish gold Vivo Y100, lightly refurbished.', 950.00, 1, 7, 3, 5, 8, 1, NOW());
+
+-- map some products into the sample collections using titles to resolve IDs
+INSERT INTO `AnythingLK`.`collection_product` (`collection_id`, `product_id`)
+SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'tech-deals'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'OnePlus 11 - Black')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'tech-deals'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'iPhone 14 Pro - Silver')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'tech-deals'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'Galaxy S22 - White')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'my-favorites'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'iPhone 13 - Black')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'my-favorites'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'Redmi Note 12 - Blue')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'budget-picks'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'Nord CE 3 Lite - Blue')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'budget-picks'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'Realme 11x - Blue')
+UNION ALL SELECT (SELECT id FROM `AnythingLK`.`collection` WHERE slug = 'budget-picks'), (SELECT id FROM `AnythingLK`.`product` WHERE title = 'Oppo A78 - Red');
 
 INSERT INTO `AnythingLK`.`delivery_type` (`name`, `price`)
 VALUES
