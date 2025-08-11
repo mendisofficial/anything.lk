@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Sale() {
   return (
     <section
@@ -17,12 +19,12 @@ export default function Sale() {
           Most of our products are limited releases that won&apos;t come back.
           Get your favorite items while they&apos;re in stock.
         </p>
-        <a
-          href="#"
+        <Link
+          href="/search"
           className="mt-6 inline-block w-full rounded-md border border-transparent bg-gray-900 px-8 py-3 font-medium text-white hover:bg-gray-800 sm:w-auto"
         >
           Get access to our one-time sale
-        </a>
+        </Link>
       </div>
     </section>
   );

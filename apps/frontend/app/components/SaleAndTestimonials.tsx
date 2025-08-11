@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Sale from "./Sale";
 import Testimonials from "./Testimonials";
 
@@ -9,10 +10,11 @@ export default function SaleAndTestimonials() {
       {/* Decorative background image and gradient */}
       <div aria-hidden="true" className="absolute inset-0">
         <div className="absolute inset-0 mx-auto max-w-7xl overflow-hidden xl:px-8">
-          <img
+          <Image
             alt=""
             src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-sale-full-width.jpg"
             className="size-full object-cover"
+            layout="fill"
           />
         </div>
         <div className="absolute inset-0 bg-white/75" />
