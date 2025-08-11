@@ -108,7 +108,7 @@ export default function ProductOverview({
                 {availableImages.map((image) => (
                   <Tab
                     key={image.id}
-                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium text-gray-900 uppercase hover:bg-gray-50 focus:ring-3 focus:ring-indigo-500/50 focus:ring-offset-4 focus:outline-hidden"
+                    className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium text-gray-900 uppercase hover:bg-gray-50 focus:ring-3 focus:ring-vivid-magenta/50 focus:ring-offset-4 focus:outline-hidden"
                   >
                     <span className="sr-only">{image.name}</span>
                     <span className="absolute inset-0 overflow-hidden rounded-md">
@@ -122,7 +122,7 @@ export default function ProductOverview({
                     </span>
                     <span
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-selected:ring-indigo-500"
+                      className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-selected:ring-vivid-magenta"
                     />
                   </Tab>
                 ))}
@@ -168,7 +168,7 @@ export default function ProductOverview({
                       aria-hidden="true"
                       className={classNames(
                         product.rating > rating
-                          ? "text-indigo-500"
+                          ? "text-vivid-magenta"
                           : "text-gray-300",
                         "size-5 shrink-0"
                       )}
@@ -220,7 +220,7 @@ export default function ProductOverview({
               <div className="mt-10 flex">
                 <button
                   type="submit"
-                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 disabled:bg-indigo-300 disabled:cursor-not-allowed focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full"
+                  className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-vivid-magenta px-8 py-3 text-base font-medium text-white hover:bg-vivid-magenta-hover disabled:bg-vivid-magenta/50 disabled:cursor-not-allowed focus:ring-2 focus:ring-vivid-magenta focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full"
                   disabled={adding || (product?.qty ?? 0) < 1}
                   onClick={(e) => {
                     e.preventDefault();
@@ -234,13 +234,14 @@ export default function ProductOverview({
                     : "Add to bag"}
                 </button>
 
-                <button
+                {/* Removed adding to favorites button */}
+                {/* <button
                   type="button"
                   className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
                 >
                   <HeartIcon aria-hidden="true" className="size-6 shrink-0" />
                   <span className="sr-only">Add to favorites</span>
-                </button>
+                </button> */}
               </div>
             </form>
 
@@ -254,7 +255,7 @@ export default function ProductOverview({
                   <Disclosure key={detail.name} as="div">
                     <h3>
                       <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
-                        <span className="text-sm font-medium text-gray-900 group-data-open:text-indigo-600">
+                        <span className="text-sm font-medium text-gray-900 group-data-open:text-vivid-magenta">
                           {detail.name}
                         </span>
                         <span className="ml-6 flex items-center">
@@ -264,7 +265,7 @@ export default function ProductOverview({
                           />
                           <MinusIcon
                             aria-hidden="true"
-                            className="hidden size-6 text-indigo-400 group-hover:text-indigo-500 group-data-open:block"
+                            className="hidden size-6 text-vivid-magenta group-hover:text-vivid-magenta-hover group-data-open:block"
                           />
                         </span>
                       </DisclosureButton>
