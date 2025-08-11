@@ -94,6 +94,10 @@ INSERT INTO `AnythingLK`.`status` (`value`) VALUES
 INSERT INTO `AnythingLK`.`user` (`first_name`, `last_name`, `email`, `password`, `verification`, `created_at`)
 VALUES ('Demo', 'User', 'user@anything.lk', 'Pass1234', 'Verified', NOW());
 
+-- Seed Admin User
+INSERT INTO `AnythingLK`.`user` (`first_name`, `last_name`, `email`, `password`, `verification`, `created_at`)
+VALUES ('Admin', 'User', 'admin@anything.lk', 'Admin@123', 'Admin', NOW());
+
 -- create a few sample collections for the demo user
 INSERT INTO `AnythingLK`.`collection` (`name`, `slug`, `description`, `is_public`, `user_id`, `created_at`) VALUES
 ('Tech Deals', 'tech-deals', 'Top picks and promos on popular phones', 1, 1, NOW()),
