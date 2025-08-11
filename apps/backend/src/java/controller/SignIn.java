@@ -60,11 +60,11 @@ public class SignIn extends HttpServlet {
                 //Add session 
                 HttpSession ses = request.getSession();
                 
-                if (!u.getVerification().equals("Verified")) { // not verified
+                boolean isAdmin = "Admin".equals(u.getVerification());
+                if (!u.getVerification().equals("Verified") && !isAdmin) { // not verified
                     ses.setAttribute("email", email);
                     responseObject.addProperty("message", "Please verify your email"); // email not verified user
-
-                } else { // verified
+                } else { // verified or admin
                     ses.setAttribute("user", u);
                     responseObject.addProperty("message", "Successfully signed in!"); // verified User
                     
@@ -74,6 +74,7 @@ public class SignIn extends HttpServlet {
                     userObject.addProperty("firstName", u.getFirst_name());
                     userObject.addProperty("lastName", u.getLast_name());
                     userObject.addProperty("email", u.getEmail());
+                    userObject.addProperty("isAdmin", isAdmin);
                     // userObject.addProperty("verification", u.getVerification());
                     // userObject.addProperty("created_at", u.getCreated_at().toString());
                     responseObject.add("user", userObject);

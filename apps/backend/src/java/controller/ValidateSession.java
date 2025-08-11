@@ -49,7 +49,10 @@ public class ValidateSession extends HttpServlet {
                     userInfo.addProperty("firstName", user.getFirst_name());
                     userInfo.addProperty("lastName", user.getLast_name());
                     userInfo.addProperty("email", user.getEmail());
-                    userInfo.addProperty("verified", "Verified".equals(user.getVerification()));
+                    boolean isAdmin = "Admin".equals(user.getVerification());
+                    boolean isVerified = isAdmin || "Verified".equals(user.getVerification());
+                    userInfo.addProperty("verified", isVerified);
+                    userInfo.addProperty("isAdmin", isAdmin);
                     responseObject.add("user", userInfo);
                     
                 } else if (emailObj != null) {
