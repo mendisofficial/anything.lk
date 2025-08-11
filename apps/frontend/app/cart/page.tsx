@@ -252,14 +252,15 @@ export default function CartPage() {
             </dl>
 
             <div className="mt-6">
-              <button
-                type="button"
-                className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden disabled:opacity-60"
-                disabled={items.length === 0 || loading}
-                onClick={() => refetch()}
-              >
-                Refresh Cart
-              </button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/checkout"
+                  className="w-full sm:flex-1 rounded-md border border-transparent bg-vivid-magenta px-4 py-3 text-base font-medium text-white text-center shadow-xs hover:bg-vivid-magenta-hover focus:ring-2 focus:ring-vivid-magenta focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden disabled:opacity-60"
+                  aria-disabled={items.length === 0 || loading}
+                >
+                  Proceed to Checkout
+                </Link>
+              </div>
             </div>
           </section>
         </form>
