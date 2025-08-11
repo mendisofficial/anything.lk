@@ -312,6 +312,17 @@ export default function Header() {
                       <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                   </div>
+                  {user?.isAdmin ? (
+                    <div className="flow-root">
+                      <Link
+                        href="/admin"
+                        className="-m-2 block p-2 font-medium text-indigo-600"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Admin Panel
+                      </Link>
+                    </div>
+                  ) : null}
                   <div className="flow-root">
                     <Link
                       href="/settings"
@@ -371,6 +382,20 @@ export default function Header() {
                     <span className="text-sm text-white">
                       Welcome, {user?.firstName} {user?.lastName}
                     </span>
+                    {user?.isAdmin ? (
+                      <>
+                        <span
+                          aria-hidden="true"
+                          className="h-6 w-px bg-gray-600"
+                        />
+                        <Link
+                          href="/admin"
+                          className="text-sm font-medium text-indigo-300 hover:text-indigo-200"
+                        >
+                          Admin Panel
+                        </Link>
+                      </>
+                    ) : null}
                     <span aria-hidden="true" className="h-6 w-px bg-gray-600" />
                     <button
                       onClick={handleLogout}

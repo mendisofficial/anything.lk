@@ -8,26 +8,38 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
   requireAuth?: boolean;
+  requireAdmin?: boolean;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   redirectTo = "/auth/signin",
   requireAuth = true,
+  requireAdmin = false,
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading) {
       if (requireAuth && !isAuthenticated) {
         router.push(redirectTo);
+      } else if (requireAdmin && !(user && user.isAdmin)) {
+        router.push("/");
       } else if (!requireAuth && isAuthenticated) {
         // Redirect authenticated users away from auth pages
         router.push("/");
       }
     }
-  }, [isAuthenticated, isLoading, requireAuth, redirectTo, router]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    requireAuth,
+    redirectTo,
+    router,
+    requireAdmin,
+    user,
+  ]);
 
   // Show loading spinner while checking authentication
   if (isLoading) {
@@ -40,6 +52,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Don't render children if authentication check fails
   if (requireAuth && !isAuthenticated) {
+    return null;
+  }
+
+  // Admin-only gate
+  if (requireAdmin && !(user && user.isAdmin)) {
     return null;
   }
 

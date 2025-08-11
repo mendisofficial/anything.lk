@@ -15,6 +15,7 @@ interface User {
   firstName: string;
   lastName: string;
   verified: boolean;
+  isAdmin?: boolean;
 }
 
 interface AuthContextType {
