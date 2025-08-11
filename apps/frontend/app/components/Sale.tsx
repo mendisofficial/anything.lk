@@ -21,7 +21,7 @@ export default function Sale() {
         </p>
         <Link
           href="/search"
-          className="mt-6 inline-block w-full rounded-md border border-transparent bg-gray-900 px-8 py-3 font-medium text-white hover:bg-gray-800 sm:w-auto"
+          className="mt-6 inline-block w-full rounded-md border border-transparent bg-vivid-magenta px-8 py-3 font-medium text-white hover:bg-vivid-magenta-hover sm:w-auto"
         >
           Get access to our one-time sale
         </Link>
