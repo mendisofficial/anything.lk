@@ -42,6 +42,9 @@
         
         <mapping class = "hibernate.OrderItems"/>
  
+    <mapping class = "hibernate.ProductCollection"/>
+    <mapping class = "hibernate.CollectionProduct"/>
+ 
     </session-factory>
 </hibernate-configuration>
 
