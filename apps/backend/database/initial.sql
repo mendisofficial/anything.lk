@@ -332,6 +332,55 @@ CREATE TABLE IF NOT EXISTS `AnythingLK`.`order_item` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `AnythingLK`.`collection`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `AnythingLK`.`collection` ;
+
+CREATE TABLE IF NOT EXISTS `AnythingLK`.`collection` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `slug` VARCHAR(150) NOT NULL,
+  `description` TEXT NULL,
+  `is_public` TINYINT(1) NOT NULL DEFAULT 0,
+  `user_id` INT NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_collection_slug` (`slug` ASC) VISIBLE,
+  INDEX `fk_collection_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_collection_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `AnythingLK`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `AnythingLK`.`collection_product`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `AnythingLK`.`collection_product` ;
+
+CREATE TABLE IF NOT EXISTS `AnythingLK`.`collection_product` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `collection_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_collection_product` (`collection_id` ASC, `product_id` ASC) VISIBLE,
+  INDEX `fk_collection_product_product1_idx` (`product_id` ASC) VISIBLE,
+  CONSTRAINT `fk_collection_product_collection1`
+    FOREIGN KEY (`collection_id`)
+    REFERENCES `AnythingLK`.`collection` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_collection_product_product1`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `AnythingLK`.`product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
