@@ -8,6 +8,7 @@ import RelatedProducts from "../components/RelatedProducts";
 import { Loading } from "../components/Loading";
 import useSingleProduct from "./hooks/useSingleProduct";
 import ProductOverview from "../components/ProductOverview";
+import OwnerProductCollections from "../components/OwnerProductCollections";
 
 function ProductPageContent() {
   const searchParams = useSearchParams();
@@ -57,6 +58,12 @@ function ProductPageContent() {
     <StoreFrontTemplate>
       <main className="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
         <ProductOverview product={product} productImages={productImages} />
+        {product && (
+          <OwnerProductCollections
+            productId={product.id}
+            ownerUserId={product.user.id}
+          />
+        )}
         <RelatedProducts
           products={relatedProducts}
           similarProductImages={similarProductImages}

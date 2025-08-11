@@ -13,6 +13,7 @@ import AccountDetails from "./components/AccountDetails";
 import AddProducts from "./components/AddProducts";
 import Addresses from "./components/Addresses";
 import MyProducts from "./components/MyProducts";
+import MyCollections from "./components/MyCollections";
 import StoreFrontTemplate from "../components/StoreFrontTemplate";
 
 const sideNavigation = [
@@ -27,6 +28,7 @@ const sideNavigation = [
     icon: ArchiveBoxArrowDownIcon,
   },
   { id: "Product Listing", name: "Product Listing", icon: ArchiveBoxIcon },
+  { id: "Collections", name: "Collections", icon: ArchiveBoxIcon },
   { id: "Orders", name: "Orders", icon: CubeIcon },
   { id: "Addresses", name: "Addresses", icon: HomeIcon },
 ];
@@ -86,6 +88,7 @@ export default function SettingsPage() {
             {activeTab === "Account Details" && <AccountDetails />}
             {activeTab === "Add Products" && <AddProducts />}
             {activeTab === "Product Listing" && <MyProducts />}
+            {activeTab === "Collections" && <MyCollections />}
             {activeTab === "Addresses" && <Addresses />}
           </main>
         </div>
