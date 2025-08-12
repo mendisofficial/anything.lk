@@ -10,6 +10,7 @@
   "devDependencies": {
     "@nx/next": "^21.3.11",
     "@nx/workspace": "21.3.11",
-    "nx": "21.3.11"
+    "nx": "21.3.11",
+    "@nx/eslint": "21.3.11"
   }
 }
