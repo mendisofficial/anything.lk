@@ -8,6 +8,7 @@
     "empty": "0.10.1"
   },
   "devDependencies": {
+    "@nx/next": "^21.3.11",
     "@nx/workspace": "21.3.11",
     "nx": "21.3.11"
   }
